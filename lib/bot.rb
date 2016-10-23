@@ -1,8 +1,8 @@
 require 'telegram/bot'
 
 module Bot
-  TOKEN = YAML.load(File.open("#{__dir__}/../config.yml"))[:token]
-  puts "TOKEN #{TOKEN}" # 補判斷nil
+  TOKEN = YAML.load(File.open("#{__dir__}/../config/settings.yml"))[:token]
+  puts "TOKEN #{TOKEN}"
   def self.start!
     Telegram::Bot::Client.run(TOKEN) do |bot|
       bot.listen do |message|
@@ -12,17 +12,9 @@ module Bot
         when 'ping'
           bot.api.send_message(chat_id: message.chat.id, text: 'pong')
         when /[~!@#$%^&*()_+\/\\]+/ # 簡單排除特殊字元
-          bot.api.send_message(chat_id: message.chat.id, text: "關鍵字 [#{message.text}]: 無法判別")
+          bot.api.send_message(chat_id: message.chat.id, text: "GOGOGOGO")
         else
-          ans = Parser.avmo_pw(message.text)
-          if ans
-            bot.api.send_message(chat_id: message.chat.id, text: "關鍵字 [#{message.text}]:")
-            ans.each do |a| 
-              bot.api.send_message(chat_id: message.chat.id, text: a)
-            end
-          else
-            bot.api.send_message(chat_id: message.chat.id, text: "Hello, 無此關鍵字!")
-          end
+          bot.api.send_message(chat_id: message.chat.id, text: "Test")
         end
       end
     end
